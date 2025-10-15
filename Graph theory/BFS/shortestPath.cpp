@@ -1,3 +1,4 @@
+// s=source node t=target node n = highest node number m=number of edges
 vector<int> shortestPath( vector<pair<int,int>> edges, int n, int m, int s, int t)
 {
 
@@ -40,3 +41,5 @@ vector<int> shortestPath( vector<pair<int,int>> edges, int n, int m, int s, int 
     return ans;
 
 }
+
+// https://www.naukri.com/code360/problems/shortest-path-in-an-unweighted-graph_981297?leftPanelTab=0&utm_source=youtube&utm_medium=affiliate&utm_campaign=Lovebabbar
