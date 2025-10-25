@@ -1,0 +1,141 @@
+// Problem:
+//https://codeforces.com/edu/course/2/lesson/4/1/practice/contest/273169/problem/A
+
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long      ll;
+#define F              first
+#define S              second
+#define pb             push_back
+#define pbs            pop_back()
+#define vi             vector<int>
+#define r(v)           for(auto &i:v) cin>>i
+#define w(v)           for(auto &i:v) cout<<i<<" "
+#define all(v)         v.begin(),v.end()
+#define rall(v)        v.rbegin(),v.rend()
+#define sz(x)          (int)(x).size()
+#define yes            cout<<"YES\n"
+#define no             cout<<"NO\n"
+#define nl             "\n"
+#define ali            cout<<"Alice\n"
+#define bob            cout<<"Bob\n"
+#define int            ll
+#define decF_incS(v)   sort(v.begin(), v.end(), [](const auto &a, const auto &b) {if (a.first != b.first)return a.first > b.first;return a.second.first < b.second.first; });
+#define incF_decS(v)   sort(v.begin(), v.end(), [](const auto &a, const auto &b) {if (a.first != b.first)return a.first < b.first;return a.second.first > b.second.first; });
+#define MOD            1000000007
+const double PI = acos(-1.0);
+
+
+struct segtree
+{
+
+    int size;
+    vector<int> sums;
+    void init(int n)
+    {
+        size=1;
+        while(size<n) size*=2;
+        sums.assign(2*size,0LL);
+
+    }
+
+    int sum(int l,int r,int x,int lx, int rx)
+    {
+        if(lx>=r||rx<=l) return 0;
+        if(lx>=l && rx<=r) return sums[x];
+        int m=(lx+rx)/2;
+        int s1 = sum(l,r,2*x+1,lx,m);
+        int s2 = sum(l,r,2*x+2,m,rx);
+        return s1+s2;
+    }
+    int sum(int l,int r)
+    {
+        return sum(l,r,0,0,size);
+    }
+
+    void sett(int i,int v,int x,int lx,int rx)
+    {
+        if(rx-lx==1)
+        {
+            sums[x]=v;
+            return;
+        }
+        int m=(lx+rx)/2;
+        if(i<m)
+        {
+            sett(i,v,2*x+1,lx,m);
+        }
+        else
+        {
+            sett(i,v,2*x+2,m,rx);
+        }
+        sums[x]=sums[2*x+1]+sums[2*x+2];
+    }
+    void sett(int i,int v)
+    {
+        sett(i,v,0,0,size);
+    }
+    vector<int> getsum()
+    {
+        return sums;
+    }
+
+};
+
+
+
+void solve()
+{
+
+    int n,m;
+    cin>>n>>m;
+
+    segtree st;
+
+    st.init(n);
+    for(int i=0; i<n; i++)
+    {
+        int x;
+        cin>>x;
+        st.sett(i,x);
+    }
+    while(m--)
+    {
+        int t,u,v;
+        cin>>t>>u>>v;
+        if(t==1)
+        {
+            st.sett(u,v);
+        }
+        else
+        {
+            cout<<st.sum(u,v)<<nl;
+        }
+    }
+//    vector<int> v=st.getsum();
+//    cout<<v.size();
+//    w(v);
+
+
+}
+
+
+int32_t main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+
+//    int t;
+//    cin>>t;
+//    while(t--)
+//    {
+//        solve();
+//    }
+//
+    solve();
+
+}
+
+
+
