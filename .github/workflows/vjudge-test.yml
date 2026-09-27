@@ -1,0 +1,45 @@
+name: VJudge connectivity test
+
+on:
+  push:
+    paths:
+      - ".github/workflows/vjudge-test.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Query VJudge contest endpoint
+        run: |
+          python - <<'PY'
+          import requests
+
+          url = "https://vjudge.net/contest/rank/single/849159"
+
+          r = requests.get(
+              url,
+              headers={
+                  "User-Agent": "Mozilla/5.0"
+              },
+              timeout=30,
+          )
+
+          print("HTTP STATUS:", r.status_code)
+          print("CONTENT TYPE:", r.headers.get("content-type"))
+          print("FIRST 1000 CHARACTERS:")
+          print(r.text[:1000])
+
+          if r.status_code != 200:
+              raise SystemExit(1)
+
+          try:
+              data = r.json()
+              print("JSON OK")
+              print("participants:", len(data.get("participants", {})))
+              print("submissions:", len(data.get("submissions", [])))
+          except Exception as e:
+              print("JSON PARSE ERROR:", e)
+              raise SystemExit(1)
+          PY
