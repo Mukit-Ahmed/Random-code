@@ -43,3 +43,5 @@ jobs:
               print("JSON PARSE ERROR:", e)
               raise SystemExit(1)
           PY
+
+# test retrigger
